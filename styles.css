@@ -18,10 +18,10 @@ body {
     height: 100%;
     top: 0;
     left: 0;
-    background-color: pink;
+    /* background-color: pink; */
     border: 5px solid black;
 }
 
 #collisionCanvas {
-    visibility: hidden;
+    /* visibility: hidden; */
 }

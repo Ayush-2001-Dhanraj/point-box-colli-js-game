@@ -13,13 +13,25 @@ ctx.font = "50px Impact";
 
 let score = 0;
 let timeToNextRaven = 0;
-let ravenInterval = 500;
+let ravenInterval = 1000;
 let lastTime = 0;
 let gameOver = false;
+let x = 0;
 
 let ravens = [];
 let hits = [];
 let particles = [];
+
+const imageLayer1 = new Image();
+imageLayer1.src = "ocean1.png";
+const imageLayer2 = new Image();
+imageLayer2.src = "ocean2.png";
+const imageLayer3 = new Image();
+imageLayer3.src = "ocean3.png";
+const imageLayer4 = new Image();
+imageLayer4.src = "ocean4.png";
+
+const imageLayers = [imageLayer1, imageLayer2, imageLayer3, imageLayer4];
 
 const createColor = (r, g, b) => {
   return "rgb(" + r + "," + g + "," + b + ")";
@@ -29,12 +41,12 @@ class Raven {
   constructor() {
     this.spriteHeight = 194;
     this.spriteWidth = 271;
-    this.sizeModifier = Math.random() * 0.5 + 0.2;
+    this.sizeModifier = Math.random() * 1 + 0.2;
     this.width = this.spriteWidth * this.sizeModifier;
     this.height = this.spriteHeight * this.sizeModifier;
     this.x = CANVAS_WIDTH;
     this.y = Math.random() * (CANVAS_HEIGHT - this.height);
-    this.directionX = Math.random() * 2 + 4;
+    this.directionX = Math.random() * 10 + 4;
     this.directionY = Math.random() * 10 - 5;
     this.markedForRemoval = false;
     this.image = new Image();
@@ -172,6 +184,50 @@ class Particle {
   }
 }
 
+class Layer {
+  constructor(image, speedModifier, isStationary, canHide = false) {
+    this.image = image;
+    this.speedModifier = speedModifier;
+    this.speed = speedModifier;
+    this.x = 0;
+    this.y = 0;
+    this.width = CANVAS_WIDTH;
+    this.height = CANVAS_HEIGHT;
+    this.isStationary = isStationary;
+    this.canHide = canHide;
+  }
+  update(deltaTime) {
+    if (this.x > this.width) this.x = 0;
+    else this.x += this.speed;
+  }
+  draw() {
+    if (this.x > this.width / 2 && this.canHide) {
+    } else {
+      ctx.drawImage(
+        this.image,
+        !this.isStationary ? this.x : 0,
+        this.y,
+        this.width,
+        this.height
+      );
+      ctx.drawImage(
+        this.image,
+        !this.isStationary ? this.x - this.width + 5 : 0,
+        this.y,
+        this.width,
+        this.height
+      );
+    }
+  }
+}
+
+const backgroundLayers = [
+  new Layer(imageLayer1, 10, false),
+  new Layer(imageLayer2, 1, true),
+  new Layer(imageLayer3, 2, false),
+  new Layer(imageLayer4, 2, true, true),
+];
+
 const r = new Raven();
 
 function drawScore() {
@@ -227,8 +283,7 @@ function animate(timestamp) {
       return a.width - b.width;
     });
   }
-  drawScore();
-  [...particles, ...ravens, ...hits].forEach((obj) => {
+  [...backgroundLayers, ...particles, ...ravens, ...hits].forEach((obj) => {
     obj.update(deltaTime);
     obj.draw();
   });
@@ -236,9 +291,11 @@ function animate(timestamp) {
   ravens = ravens.filter((raven) => !raven.markedForRemoval);
   hits = hits.filter((exp) => !exp.markedForRemoval);
   particles = particles.filter((par) => !par.markedForRemoval);
+  drawScore();
 
-  if (!gameOver) requestAnimationFrame(animate);
-  else drawGameOver();
+  // if (!gameOver)
+  requestAnimationFrame(animate);
+  // else drawGameOver();
 }
 
 animate(0);
