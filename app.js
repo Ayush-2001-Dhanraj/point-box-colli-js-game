@@ -200,12 +200,10 @@ window.addEventListener("click", (e) => {
   );
   ravens.forEach((raven) => {
     if (raven.color === currentColor) {
-      console.log(raven.x, raven.y, raven.sizeModifier);
       hits.push(new Hit(raven.x, raven.y, raven.width));
       raven.markedForRemoval = true;
       score++;
     }
-    console.log(hits);
   });
 });
 
