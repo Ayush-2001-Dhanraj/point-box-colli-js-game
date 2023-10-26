@@ -13,7 +13,7 @@ ctx.font = "50px Impact";
 
 let score = 0;
 let timeToNextRaven = 0;
-let ravenInterval = 1000;
+let ravenInterval = 500;
 let lastTime = 0;
 let gameOver = false;
 let x = 0;
@@ -23,15 +23,15 @@ let hits = [];
 let particles = [];
 
 const imageLayer1 = new Image();
-imageLayer1.src = "ocean1.png";
+imageLayer1.src = "1.png";
 const imageLayer2 = new Image();
-imageLayer2.src = "ocean2.png";
+imageLayer2.src = "2.png";
 const imageLayer3 = new Image();
-imageLayer3.src = "ocean3.png";
+imageLayer3.src = "3.png";
 const imageLayer4 = new Image();
-imageLayer4.src = "ocean4.png";
-
-const imageLayers = [imageLayer1, imageLayer2, imageLayer3, imageLayer4];
+imageLayer4.src = "4.png";
+const imageLayer5 = new Image();
+imageLayer5.src = "5.png";
 
 const createColor = (r, g, b) => {
   return "rgb(" + r + "," + g + "," + b + ")";
@@ -223,12 +223,11 @@ class Layer {
 
 const backgroundLayers = [
   new Layer(imageLayer1, 10, false),
-  new Layer(imageLayer2, 1, true),
-  new Layer(imageLayer3, 2, false),
-  new Layer(imageLayer4, 2, true, true),
+  new Layer(imageLayer5, 1, true),
+  new Layer(imageLayer2, 1, false),
+  new Layer(imageLayer4, 1, false),
+  new Layer(imageLayer3, 2.5, false),
 ];
-
-const r = new Raven();
 
 function drawScore() {
   ctx.fillStyle = "#000";
